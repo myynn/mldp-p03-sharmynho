@@ -32,20 +32,35 @@ def set_bg_image(image_path: str):
             background-size: cover;
         }}
 
+        header[data-testid="stHeader"] {{ background: rgba(0,0,0,0) !important; }}
+        div[data-testid="stToolbar"] {{ visibility: hidden !important; height: 0 !important; }}
+        #MainMenu {{ visibility: hidden; }}
+        footer {{ visibility: hidden; }}
+
+        .block-container {{
+            padding-top: 0.7rem !important;
+            padding-bottom: 1.2rem !important;
+            max-width: 980px !important;
+        }}
+
+        .brand-wrap {{
+            margin: 8px auto 18px auto;
+            padding: 12px 14px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.90);
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.18);
+        }}
         .brand {{
             display:flex;
             align-items:center;
             gap:12px;
-            padding: 14px 10px 6px 10px;
+            padding: 0;
         }}
         .brand-badge {{
-            width:40px;
-            height:40px;
+            width:40px; height:40px;
             border-radius:10px;
             background: rgba(0, 90, 255, 0.9);
-            display:flex;
-            align-items:center;
-            justify-content:center;
+            display:flex; align-items:center; justify-content:center;
             color:white;
             font-size:18px;
             font-weight:700;
@@ -63,173 +78,83 @@ def set_bg_image(image_path: str):
             margin:0;
         }}
 
-        header[data-testid="stHeader"] {{
-            background: rgba(0,0,0,0) !important;
-        }}
-        div[data-testid="stToolbar"] {{
-            visibility: hidden !important;
-            height: 0% !important;
-            position: fixed !important;
-        }}
-        #MainMenu {{visibility: hidden;}}
-        footer {{visibility: hidden;}}
-
-        .block-container {{
-            padding-top: 0.2rem !important;
-            padding-bottom: 1rem !important;
-        }}
-
-        .brand-wrap{{
-            max-width: 980px;
-            margin: 18px auto 0 auto;
-            padding: 12px 14px;
-            border-radius: 18px;
-            background: rgba(255,255,255,0.85);
-            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.18);
-        }}
-
-        .brand{{
-            display:flex;
-            align-items:center;
-            gap:12px;
-            padding: 0;
-        }}
-
-        .card{{
-            background: #EAF3FF !important;
-            border-radius: 18px;
-            padding: 26px 26px 18px 26px;
-            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25);
-            max-width: 980px;
-            margin: 14px auto 18px auto;
-        }}
-
-        .result-card{{
-            background: #DCEBFF !important;
-            border-radius: 16px;
-            padding: 18px 18px;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.20);
-            margin-top: 16px;
-        }}
-
-        .card h2{{
+        .center-title {{
             text-align:center;
-            margin: 0 0 6px 0;
-            color:#0f172a;
-            font-weight:800;
+            font-size: 42px;
+            font-weight: 900;
+            color: #0f172a;
+            margin: 10px 0 4px 0;
         }}
-        .card p{{
+        .center-sub {{
             text-align:center;
+            font-size: 16px;
+            color: #0f172a;
             margin: 0 0 18px 0;
-            color:#334155;
-            font-size: 13px;
         }}
 
-        .card h2 {{
-            text-align:center;
-            margin: 0 0 4px 0;
-            color:#0f172a;
-            font-weight:800;
+        div[data-testid="stForm"] {{
+            background: rgba(255,255,255,0.92) !important;
+            border-radius: 18px !important;
+            padding: 22px 22px 18px 22px !important;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25) !important;
+            border: 1px solid rgba(15,23,42,0.10) !important;
         }}
 
-        .card p {{
-            text-align:center;
-            margin: 0 0 18px 0;
-            color:#475569;
-            font-size: 13px;
+        label {{
+            color: #0f172a !important;
+            font-weight: 700 !important;
         }}
 
-        .stButton button, .stForm button {{
+        input, textarea {{
+            background: #111827 !important;
+            color: #ffffff !important;
+            border: 1.5px solid rgba(255,255,255,0.35) !important;
+            border-radius: 12px !important;
+        }}
+
+        div[data-baseweb="select"] > div {{
+            background: #111827 !important;
+            color: #ffffff !important;
+            border: 1.5px solid rgba(255,255,255,0.35) !important;
+            border-radius: 12px !important;
+        }}
+
+        div[data-baseweb="select"] span {{
+            color: #ffffff !important;
+        }}
+
+        div[data-testid="stNumberInput"] button {{
+            background: #111827 !important;
+            color: #ffffff !important;
+            border: 1.5px solid rgba(255,255,255,0.35) !important;
+        }}
+        div[data-testid="stNumberInput"] svg {{
+            fill: #ffffff !important;
+        }}
+
+        .stForm button {{
+            background: #2563eb !important;
+            color: #ffffff !important;
+            border-radius: 12px !important;
+            font-weight: 800 !important;
+            padding: 10px 14px !important;
             width: 100%;
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-weight: 700;
         }}
 
-        .block-container {{
-            padding-top: 0.6rem;
-            padding-bottom: 1rem;
+        code {{
+            color: #ffffff !important;
+            background: #111827 !important;
+            padding: 2px 6px !important;
+            border-radius: 8px !important;
         }}
 
-        .card input, .card textarea {{
+        div[data-baseweb="tooltip"] {{
             background: #ffffff !important;
             color: #0f172a !important;
+            border-radius: 10px !important;
+            border: 1px solid rgba(15,23,42,0.15) !important;
         }}
 
-        .card [data-baseweb="select"] > div {{
-            background: #ffffff !important;
-            color: #0f172a !important;
-            border-radius: 12px !important;
-        }}
-
-        .card [data-testid="stNumberInput"] input {{
-            background: #ffffff !important;
-            color: #0f172a !important;
-            border-radius: 12px !important;
-        }}
-
-        .card [data-testid="stTextInput"] input {{
-            background: #ffffff !important;
-            color: #0f172a !important;
-            border-radius: 12px !important;
-        }}
-
-        .card svg {{
-            fill: #0f172a !important;
-        }}
-
-        .card label {{
-            color: #0f172a !important;
-            font-weight: 700 !important;
-        }}
-        html, body, [class*="st-"], .stMarkdown, .stText, .stCaption {{
-            color: #0f172a !important;
-        }}
-
-        .card{{
-            background: #ffffff !important;
-            border-radius: 18px;
-            padding: 26px 26px 18px 26px;
-            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25);
-            max-width: 980px;
-            margin: 14px auto 18px auto;
-        }}
-
-        .result-card{{
-            background: #f4f8ff !important;
-            border-radius: 16px;
-            padding: 18px 18px;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.20);
-            margin-top: 16px;
-        }}
-
-        .card input, .card textarea, .card [data-baseweb="select"] > div{{
-            background: #ffffff !important;
-            color: #0f172a !important;
-            border: 1.5px solid rgba(15, 23, 42, 0.35) !important;
-            border-radius: 12px !important;
-        }}
-
-        .card [data-testid="stNumberInput"] input{{
-            border: 1.5px solid rgba(15, 23, 42, 0.35) !important;
-        }}
-
-        .card svg{{
-            fill: #0f172a !important;
-        }}
-
-        .card label{{
-            color: #0f172a !important;
-            font-weight: 700 !important;
-        }}
-
-        div[data-testid="stAlert"][role="alert"]{{
-            border-radius: 12px !important;
-        }}
-
-        div[data-testid="stAlert"] div[role="alert"]{{
-            color: #0f172a !important;
-        }}
         </style>
         """,
         unsafe_allow_html=True
@@ -306,10 +231,8 @@ def build_feature_row(
     return pd.DataFrame([row], columns=SELECTED_FEATURES)
 
 #main ui
-st.markdown('<div class="card">', unsafe_allow_html=True)
-
-st.markdown("<h2>Patient Risk Assessment</h2>", unsafe_allow_html=True)
-st.markdown("<p>Complete the form below for your stroke risk analysis</p>", unsafe_allow_html=True)
+st.markdown('<div class="center-title">Patient Risk Assessment</div>', unsafe_allow_html=True)
+st.markdown('<div class="center-sub">Complete the form below for your stroke risk analysis</div>', unsafe_allow_html=True)
 
 with st.form("stroke_form", clear_on_submit=False):
 
@@ -398,7 +321,7 @@ if submitted:
         # Result card
         st.markdown("<div class='result-card'>", unsafe_allow_html=True)
 
-        st.subheader("Result")
+        st.markdown('<div class="center-title" style="font-size:28px;">Result</div>', unsafe_allow_html=True)
         st.write(f"**Predicted stroke risk probability:** `{prob:.4f}`")
 
         if pred == 1:
@@ -411,5 +334,3 @@ if submitted:
         st.progress(min(max(prob, 0.0), 1.0))
 
         st.markdown("</div>", unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
