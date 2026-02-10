@@ -369,15 +369,11 @@ with st.form("stroke_form", clear_on_submit=False):
     )
     st.caption("Normal range: 18.5–24.9")
 
-    st.form_submit_button("Save inputs")
-
-    st.markdown('<div class="center-btn">', unsafe_allow_html=True)
-    analyse_clicked = st.button("Analyse stroke risk", type="primary")
-    st.markdown('</div>', unsafe_allow_html=True)
+    submitted = st.form_submit_button("Analyse stroke risk")
 
 
 # validation and prediction
-if analyse_clicked:
+if submitted:
     errors = []
 
     # dropdown validations
