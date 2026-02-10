@@ -253,6 +253,28 @@ def set_bg_image(image_path: str):
             color:#0f172a;
             margin: 22px 0 10px 0;
         }}
+
+        .center-btn {{
+            display:flex;
+            justify-content:center;
+            margin-top: 14px;
+        }}
+        .center-btn button {{
+            background: rgba(0, 90, 255, 0.9) !important;
+            color: #ffffff !important;
+            border-radius: 12px !important;
+            font-weight: 800 !important;
+            padding: 10px 14px !important;
+            width: 55% !important;
+            min-width: 240px !important;
+        }}
+
+        div[data-testid="stProgress"] > div {{
+            background: rgba(15,23,42,0.14) !important;
+        }}
+        div[data-testid="stProgress"] > div > div {{
+            background: rgba(0, 90, 255, 0.9) !important;
+        }}
         </style>
         """,
         unsafe_allow_html=True
@@ -347,11 +369,15 @@ with st.form("stroke_form", clear_on_submit=False):
     )
     st.caption("Normal range: 18.5–24.9")
 
-    submitted = st.form_submit_button("Analyse stroke risk")
+    st.form_submit_button("Save inputs")
+
+    st.markdown('<div class="center-btn">', unsafe_allow_html=True)
+    analyse_clicked = st.button("Analyse stroke risk", type="primary")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 # validation and prediction
-if submitted:
+if analyse_clicked:
     errors = []
 
     # dropdown validations
@@ -402,13 +428,13 @@ if submitted:
         if pred == 1:
             risk_box = f"""
             <div class="risk-box risk-high">
-                Prediction: Higher stroke risk (screening estimate)
+                Prediction: Higher stroke risk
             </div>
             """
         else:
             risk_box = f"""
             <div class="risk-box risk-low">
-                Prediction: Lower stroke risk (screening estimate)
+                Prediction: Lower stroke risk
             </div>
             """
         st.markdown('<div class="result-outside-title">Result</div>', unsafe_allow_html=True)
@@ -421,8 +447,9 @@ if submitted:
                 <p style="margin:0 0 6px 0; font-size: 14px;">
                     This is a screening estimate, not a medical diagnosis. Please consult a healthcare professional if you have concerns.
                 </p>
-                <div class="bar"><div style="width:{pct}%;"></div></div>
             </div>
             """,
             unsafe_allow_html=True
         )
+
+        st.progress(min(max(prob, 0.0), 1.0))
