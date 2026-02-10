@@ -201,6 +201,58 @@ def set_bg_image(image_path: str):
             width: 0%;
             background: #2563eb;
         }}
+
+        div[data-testid="stForm"] div[data-testid="stFormSubmitButton"] {{
+            display: flex !important;
+            justify-content: center !important;
+        }}
+        div[data-testid="stForm"] div[data-testid="stFormSubmitButton"] > button,
+        div[data-testid="stForm"] button[kind="primary"] {{
+            width: 55% !important;
+            min-width: 240px !important;
+            display: block !important;
+            margin: 12px auto 0 auto !important;
+        }}
+
+        div[data-testid="stNumberInput"] button {{
+            background: #111827 !important;
+            border: 1.5px solid rgba(255,255,255,0.35) !important;
+        }}
+        div[data-testid="stNumberInput"] svg {{
+            fill: #ffffff !important;
+        }}
+
+        .result-wrap, .result-wrap * {{
+            color: #0f172a !important;
+        }}
+        .result-wrap code, .result-wrap code * {{
+            color: #ffffff !important;
+            background: #111827 !important;
+            padding: 2px 10px !important;
+            border-radius: 999px !important;
+            font-weight: 800 !important;
+        }}
+
+        .bar {{
+            height: 12px !important;
+            background: rgba(15,23,42,0.12) !important;
+            border-radius: 999px !important;
+            overflow: hidden !important;
+        }}
+        .bar > div {{
+            height: 100% !important;
+            background: #2563eb !important;
+            width: 0%;
+            border-radius: 999px !important;
+        }}
+
+        .result-outside-title{{
+            text-align:center;
+            font-size: 34px;
+            font-weight: 900;
+            color:#0f172a;
+            margin: 22px 0 10px 0;
+        }}
         </style>
         """,
         unsafe_allow_html=True
@@ -277,10 +329,22 @@ with st.form("stroke_form", clear_on_submit=False):
     work_type = st.selectbox("What is your work type? *", ["Select work type...", "Government job", "Private", "Self-employed"], index=0)
     smoking_status = st.selectbox("Smoking Status *", ["Select smoking status...", "formerly smoked", "never smoked", "smokes"], index=0)
 
-    age_text = st.text_input("Age *", value="", placeholder="e.g., 30")
-    glucose_text = st.text_input("Average Glucose Level (mg/dL) *", value="", placeholder="e.g., 105.50")
+    age = st.number_input("Age *", min_value=0, max_value=120, value=0, step=1)
+
+    avg_glucose_level = st.number_input(
+        "Average Glucose Level (mg/dL) *",
+        min_value=0.00, max_value=400.00,
+        value=0.00, step=0.01, format="%.2f",
+        help="Example: 105.50 (2 decimal places)"
+    )
     st.caption("Normal range: 70–100 mg/dL")
-    bmi_text = st.text_input("Body Mass Index (BMI) *", value="", placeholder="e.g., 24.5")
+
+    bmi = st.number_input(
+        "Body Mass Index (BMI) *",
+        min_value=0.0, max_value=80.0,
+        value=0.0, step=0.1, format="%.1f",
+        help="Example: 24.5 (1 decimal place)"
+    )
     st.caption("Normal range: 18.5–24.9")
 
     submitted = st.form_submit_button("Analyse stroke risk")
@@ -303,32 +367,19 @@ if submitted:
         errors.append("Please select **Smoking status**.")
 
     # numeric validations
-    try:
-        age = int(age_text)
-        if age < 0 or age > 120:
-            errors.append("Age must be between **0 and 120**.")
-    except:
-        errors.append("Age must be a **whole number** (e.g., 30).")
+    # numeric validations (now using number_input)
+    if age == 0:
+        errors.append("Please enter **Age** (cannot be 0).")
+    if avg_glucose_level == 0:
+        errors.append("Please enter **Average glucose level** (cannot be 0).")
+    if bmi == 0:
+        errors.append("Please enter **BMI** (cannot be 0).")
 
-    try:
-        avg_glucose_level = float(glucose_text)
-        if avg_glucose_level <= 0:
-            errors.append("Average glucose level must be **greater than 0**.")
-        # 2dp check
-        if round(avg_glucose_level, 2) != avg_glucose_level:
-            errors.append("Average glucose level must be **2 decimal places** (e.g., 105.50).")
-    except:
-        errors.append("Average glucose level must be a **number** (e.g., 105.50).")
+    if round(avg_glucose_level, 2) != avg_glucose_level:
+        errors.append("Average glucose level must be **2 decimal places** (e.g., 105.50).")
 
-    try:
-        bmi = float(bmi_text)
-        if bmi <= 0:
-            errors.append("BMI must be **greater than 0**.")
-        # 1dp check
-        if round(bmi, 1) != bmi:
-            errors.append("BMI must be **1 decimal place** (e.g., 24.5).")
-    except:
-        errors.append("BMI must be a **number** (e.g., 24.5).")
+    if round(bmi, 1) != bmi:
+        errors.append("BMI must be **1 decimal place** (e.g., 24.5).")
 
     if errors:
         st.error("Please fix the following input issues:\n\n- " + "\n- ".join(errors))
@@ -360,11 +411,11 @@ if submitted:
                 Prediction: Lower stroke risk (screening estimate)
             </div>
             """
+        st.markdown('<div class="result-outside-title">Result</div>', unsafe_allow_html=True)
 
         st.markdown(
             f"""
             <div class="result-wrap">
-                <div class="result-title">Result</div>
                 <p><b>Predicted stroke risk probability:</b> <code>{prob:.4f}</code></p>
                 {risk_box}
                 <p style="margin:0 0 6px 0; font-size: 14px;">
