@@ -63,13 +63,66 @@ def set_bg_image(image_path: str):
             margin:0;
         }}
 
-        .card {{
-            background: rgba(255,255,255,0.92);
+        header[data-testid="stHeader"] {{
+            background: rgba(0,0,0,0) !important;
+        }}
+        div[data-testid="stToolbar"] {{
+            visibility: hidden !important;
+            height: 0% !important;
+            position: fixed !important;
+        }}
+        #MainMenu {{visibility: hidden;}}
+        footer {{visibility: hidden;}}
+
+        .block-container {{
+            padding-top: 0.2rem !important;
+            padding-bottom: 1rem !important;
+        }}
+
+        .brand-wrap{{
+            max-width: 980px;
+            margin: 18px auto 0 auto;
+            padding: 12px 14px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.18);
+        }}
+
+        .brand{{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding: 0;
+        }}
+
+        .card{{
+            background: #EAF3FF;
             border-radius: 18px;
             padding: 26px 26px 18px 26px;
             box-shadow: 0 12px 35px rgba(15, 23, 42, 0.20);
-            max-width: 980px;  /* wider so less scrolling */
-            margin: 18px auto 30px auto;
+            max-width: 980px;
+            margin: 14px auto 18px auto;
+        }}
+
+        .result-card{{
+            background: #DCEBFF;
+            border-radius: 16px;
+            padding: 16px 18px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+            margin-top: 14px;
+        }}
+
+        .card h2{{
+            text-align:center;
+            margin: 0 0 6px 0;
+            color:#0f172a;
+            font-weight:800;
+        }}
+        .card p{{
+            text-align:center;
+            margin: 0 0 18px 0;
+            color:#334155;
+            font-size: 13px;
         }}
 
         .card h2 {{
@@ -144,11 +197,13 @@ set_bg_image("strokeimage.jpg")
 #header at top left of my app
 st.markdown(
     """
-    <div class="brand">
-        <div class="brand-badge">≋</div>
-        <div>
-            <p class="brand-title">StrokeGuard</p>
-            <p class="brand-subtitle">Advanced Stroke Risk Assessment System</p>
+    <div class="brand-wrap">
+        <div class="brand">
+            <div class="brand-badge">≋</div>
+            <div>
+                <p class="brand-title">StrokeGuard</p>
+                <p class="brand-subtitle">Advanced Stroke Risk Assessment System</p>
+            </div>
         </div>
     </div>
     """,
@@ -303,16 +358,15 @@ if submitted:
         prob = float(model.predict_proba(X_new)[:, 1][0])
         pred = int(prob >= FINAL_THRESHOLD)
 
-        st.markdown("---")
-        st.subheader("Result")
+        st.markdown("<div class='result-card'>", unsafe_allow_html=True)
 
+        st.subheader("Result")
         st.write(f"**Predicted stroke risk probability:** `{prob:.4f}`")
-        st.write(f"**Threshold used:** `{FINAL_THRESHOLD:.2f}`")
 
         if pred == 1:
-            st.error("**Higher risk detected (Predicted: Stroke = 1).** Please consider medical follow-up.")
+            st.error("**Higher risk detected.** Please consider medical follow-up.")
         else:
-            st.success("**Lower risk detected (Predicted: Stroke = 0).**")
+            st.success("**Lower risk detected.**")
 
         st.progress(min(max(prob, 0.0), 1.0))
 
