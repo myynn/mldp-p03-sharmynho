@@ -155,6 +155,47 @@ def set_bg_image(image_path: str):
             border: 1px solid rgba(15,23,42,0.15) !important;
         }}
 
+        div[data-testid="stForm"] .stFormSubmitButton {{
+            display: flex;
+            justify-content: center;
+        }}
+        div[data-testid="stForm"] .stFormSubmitButton > button {{
+            width: 55% !important;
+            min-width: 240px !important;
+        }}
+
+        button[title="View more information"] svg,
+        button[title="View more information"] path {{
+            fill: #ffffff !important;
+            stroke: #ffffff !important;
+        }}
+        button[title="View more information"] {{
+            background: #111827 !important;
+            border: 1.5px solid rgba(255,255,255,0.35) !important;
+            border-radius: 10px !important;
+        }}
+
+        .result-wrap {{
+            background: rgba(255,255,255,0.92);
+            border-radius: 18px;
+            padding: 18px 18px 12px 18px;
+            margin-top: 16px;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25);
+            border: 1px solid rgba(15,23,42,0.10);
+        }}
+
+        .result-wrap, .result-wrap * {{
+            color: #0f172a !important;
+        }}
+
+        .result-wrap code {{
+            color: #ffffff !important;
+            background: #111827 !important;
+        }}
+
+        div[data-testid="stAlert"][data-baseweb="notification"] {{
+            border-radius: 12px !important;
+        }}
         </style>
         """,
         unsafe_allow_html=True
@@ -319,7 +360,7 @@ if submitted:
         pred = int(prob >= FINAL_THRESHOLD)
 
         # Result card
-        st.markdown("<div class='result-card'>", unsafe_allow_html=True)
+        st.markdown('<div class="result-wrap">', unsafe_allow_html=True)
 
         st.markdown('<div class="center-title" style="font-size:28px;">Result</div>', unsafe_allow_html=True)
         st.write(f"**Predicted stroke risk probability:** `{prob:.4f}`")
