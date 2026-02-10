@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-st.set_page_config(page_title="StrokeGuard", page_icon="🩺", layout="wide")
+st.set_page_config(page_title="StrokeGuard", page_icon="🩺", layout="centered")
 
 # Load model + thresholds + feature list
 
@@ -178,10 +178,57 @@ def set_bg_image(image_path: str):
             fill: #0f172a !important;
         }}
 
-        /* Labels */
         .card label {{
             color: #0f172a !important;
             font-weight: 700 !important;
+        }}
+        html, body, [class*="st-"], .stMarkdown, .stText, .stCaption {{
+            color: #0f172a !important;
+        }}
+
+        .card{{
+            background: #ffffff !important;
+            border-radius: 18px;
+            padding: 26px 26px 18px 26px;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25);
+            max-width: 980px;
+            margin: 14px auto 18px auto;
+        }}
+
+        .result-card{{
+            background: #f4f8ff !important;
+            border-radius: 16px;
+            padding: 18px 18px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.20);
+            margin-top: 16px;
+        }}
+
+        .card input, .card textarea, .card [data-baseweb="select"] > div{{
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border: 1.5px solid rgba(15, 23, 42, 0.35) !important;
+            border-radius: 12px !important;
+        }}
+
+        .card [data-testid="stNumberInput"] input{{
+            border: 1.5px solid rgba(15, 23, 42, 0.35) !important;
+        }}
+
+        .card svg{{
+            fill: #0f172a !important;
+        }}
+
+        .card label{{
+            color: #0f172a !important;
+            font-weight: 700 !important;
+        }}
+
+        div[data-testid="stAlert"][role="alert"]{{
+            border-radius: 12px !important;
+        }}
+
+        div[data-testid="stAlert"] div[role="alert"]{{
+            color: #0f172a !important;
         }}
         </style>
         """,
@@ -295,7 +342,7 @@ with st.form("stroke_form", clear_on_submit=False):
         value=100.00, step=0.01, format="%.2f",
         help="Example: 105.50 (2 decimal places)"
     )
-    st.caption("Normal fasting: 70–100 mg/dL")
+    st.caption("Normal range: 70–100 mg/dL")
 
     bmi = st.number_input(
         "Body Mass Index (BMI) *",
@@ -355,9 +402,11 @@ if submitted:
         st.write(f"**Predicted stroke risk probability:** `{prob:.4f}`")
 
         if pred == 1:
-            st.error("**Higher risk detected.** Please consider medical follow-up.")
+            st.error("**Prediction: Higher stroke risk.**")
+            st.caption("This is a screening estimate, not a medical diagnosis. Please consult a healthcare professional.")
         else:
-            st.success("**Lower risk detected.**")
+            st.success("**Prediction: Lower stroke risk.**")
+            st.caption("This is a screening estimate, not a medical diagnosis. Please consult a healthcare professional if you have concerns.")
 
         st.progress(min(max(prob, 0.0), 1.0))
 
