@@ -32,7 +32,6 @@ def set_bg_image(image_path: str):
             background-size: cover;
         }}
 
-        /* Top-left brand area spacing */
         .brand {{
             display:flex;
             align-items:center;
@@ -64,7 +63,6 @@ def set_bg_image(image_path: str):
             margin:0;
         }}
 
-        /* Center card */
         .card {{
             background: rgba(255,255,255,0.92);
             border-radius: 18px;
@@ -88,12 +86,10 @@ def set_bg_image(image_path: str):
             font-size: 13px;
         }}
 
-        /* Make Streamlit widgets look tighter inside card */
         div[data-testid="stVerticalBlock"] > div:has(> div[data-testid="stForm"]) {{
             padding-top: 0px;
         }}
 
-        /* Button styling */
         .stButton button, .stForm button {{
             width: 100%;
             border-radius: 12px;
@@ -101,10 +97,42 @@ def set_bg_image(image_path: str):
             font-weight: 700;
         }}
 
-        /* Reduce extra space above/below */
         .block-container {{
             padding-top: 0.6rem;
             padding-bottom: 1rem;
+        }}
+
+        .card input, .card textarea {{
+            background: #ffffff !important;
+            color: #0f172a !important;
+        }}
+
+        .card [data-baseweb="select"] > div {{
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border-radius: 12px !important;
+        }}
+
+        .card [data-testid="stNumberInput"] input {{
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border-radius: 12px !important;
+        }}
+
+        .card [data-testid="stTextInput"] input {{
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border-radius: 12px !important;
+        }}
+
+        .card svg {{
+            fill: #0f172a !important;
+        }}
+
+        /* Labels */
+        .card label {{
+            color: #0f172a !important;
+            font-weight: 700 !important;
         }}
         </style>
         """,
@@ -186,42 +214,60 @@ st.markdown("<p>Complete the form below for your stroke risk analysis</p>", unsa
 
 with st.form("stroke_form", clear_on_submit=False):
 
-    c1, c2 = st.columns(2, gap="large")
+    gender = st.selectbox("Gender *", ["Female", "Male"], index=0)
 
-    with c1:
-        gender = st.selectbox("Gender *", ["Female", "Male"], index=0)
-        age = st.number_input("Age *", min_value=0, max_value=120, value=30, step=1)
-        hypertension = st.selectbox("Do you have hypertension? *", ["No", "Yes"], index=0)
-        ever_married = st.selectbox("Have you ever been married? *", ["No", "Yes"], index=0)
+    age = st.number_input(
+        "Age *",
+        min_value=0, max_value=120, value=30, step=1
+    )
 
-    with c2:
-        work_type = st.selectbox("What is your work type? *", ["Govt_job", "Private", "Self-employed"], index=0)
+    hypertension = st.selectbox(
+        "Do you have hypertension? *",
+        ["No", "Yes"], index=0
+    )
 
-        avg_glucose_level = st.number_input(
-            "Average Glucose Level (mg/dL) *",
-            min_value=0.00, max_value=400.00, value=100.00, step=0.01, format="%.2f",
-            help="Example: 105.50 (2 decimal places)"
-        )
+    ever_married = st.selectbox(
+        "Have you ever been married? *",
+        ["No", "Yes"], index=0
+    )
 
-        bmi = st.number_input(
-            "Body Mass Index (BMI) *",
-            min_value=0.0, max_value=80.0, value=24.5, step=0.1, format="%.1f",
-            help="Example: 24.5 (1 decimal place)"
-        )
+    work_type = st.selectbox(
+        "What is your work type? *",
+        ["Government job", "Private", "Self-employed"],
+        index=0
+    )
 
-        smoking_status = st.selectbox(
-            "Smoking Status *",
-            ["formerly smoked", "never smoked", "smokes"],
-            index=0
-        )
+    avg_glucose_level = st.number_input(
+        "Average Glucose Level (mg/dL) *",
+        min_value=0.00, max_value=400.00,
+        value=100.00, step=0.01, format="%.2f",
+        help="Example: 105.50 (2 decimal places)"
+    )
+
+    st.caption("Normal fasting: 70–100 mg/dL")
+
+    bmi = st.number_input(
+        "Body Mass Index (BMI) *",
+        min_value=0.0, max_value=80.0,
+        value=24.5, step=0.1, format="%.1f",
+        help="Example: 24.5 (1 decimal place)"
+    )
+
+    st.caption("Normal range: 18.5–24.9")
+
+    smoking_status = st.selectbox(
+        "Smoking Status *",
+        ["formerly smoked", "never smoked", "smokes"],
+        index=0
+    )
 
     submitted = st.form_submit_button("Analyse stroke risk")
 
-#validation and prediction
+#Validation and prediction
 if submitted:
     errors = []
 
-    # Age must be whole number
+    # Age whole number
     if int(age) != age:
         errors.append("Age must be a **whole number**.")
 
@@ -264,9 +310,9 @@ if submitted:
         st.write(f"**Threshold used:** `{FINAL_THRESHOLD:.2f}`")
 
         if pred == 1:
-            st.error(" **Higher risk detected (Predicted: Stroke = 1).** Please consider medical follow-up.")
+            st.error("**Higher risk detected (Predicted: Stroke = 1).** Please consider medical follow-up.")
         else:
-            st.success(" **Lower risk detected (Predicted: Stroke = 0).**")
+            st.success("**Lower risk detected (Predicted: Stroke = 0).**")
 
         st.progress(min(max(prob, 0.0), 1.0))
 
