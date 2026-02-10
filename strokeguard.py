@@ -138,7 +138,7 @@ def set_bg_image(image_path: str):
             border-radius: 12px !important;
             font-weight: 800 !important;
             padding: 10px 14px !important;
-            width: 100%;
+            width: auto !important;
         }}
 
         code {{
@@ -197,6 +197,33 @@ def set_bg_image(image_path: str):
 
         div[data-testid="stAlert"] {{
             border-radius: 12px !important;
+        }}
+        div[data-testid="stForm"] div[data-testid="stFormSubmitButton"] {{
+            display: flex !important;
+            justify-content: center !important;
+        }}
+
+        div[data-testid="stForm"] div[data-testid="stFormSubmitButton"] > button {{
+            width: 55% !important;
+            min-width: 240px !important;
+        }}
+
+        .result-title {{
+            font-size: 28px !important;
+            margin: 0 0 10px 0 !important;
+        }}
+
+        .result-line {{
+            color: #0f172a !important;
+            font-size: 16px !important;
+            margin: 0 0 10px 0 !important;
+        }}
+
+        .result-wrap code {{
+            color: #ffffff !important;
+            background: #111827 !important;
+            padding: 2px 8px !important;
+            border-radius: 10px !important;
         }}
         </style>
         """,
@@ -361,19 +388,23 @@ if submitted:
         prob = float(model.predict_proba(X_new)[:, 1][0])
         pred = int(prob >= FINAL_THRESHOLD)
 
-        # Result card
-        st.markdown('<div class="result-wrap">', unsafe_allow_html=True)
+        with st.container():
+            st.markdown('<div class="result-wrap">', unsafe_allow_html=True)
 
-        st.markdown('<div class="center-title" style="font-size:28px;">Result</div>', unsafe_allow_html=True)
-        st.write(f"**Predicted stroke risk probability:** `{prob:.4f}`")
+            st.markdown('<div class="center-title result-title">Result</div>', unsafe_allow_html=True)
 
-        if pred == 1:
-            st.error("**Prediction: Higher stroke risk.**")
-            st.caption("This is a screening estimate, not a medical diagnosis. Please consult a healthcare professional.")
-        else:
-            st.success("**Prediction: Lower stroke risk.**")
-            st.caption("This is a screening estimate, not a medical diagnosis. Please consult a healthcare professional if you have concerns.")
+            st.markdown(
+                f'<p class="result-line"><b>Predicted stroke risk probability:</b> <code>{prob:.4f}</code></p>',
+                unsafe_allow_html=True
+            )
 
-        st.progress(min(max(prob, 0.0), 1.0))
+            if pred == 1:
+                st.error("**Prediction: Higher stroke risk.**")
+                st.caption("This is a screening estimate, not a medical diagnosis. Please consult a healthcare professional.")
+            else:
+                st.success("**Prediction: Lower stroke risk.**")
+                st.caption("This is a screening estimate, not a medical diagnosis. Please consult a healthcare professional if you have concerns.")
 
-        st.markdown("</div>", unsafe_allow_html=True)
+            st.progress(min(max(prob, 0.0), 1.0))
+
+            st.markdown("</div>", unsafe_allow_html=True)
