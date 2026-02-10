@@ -96,20 +96,20 @@ def set_bg_image(image_path: str):
         }}
 
         .card{{
-            background: #EAF3FF;
+            background: #EAF3FF !important;
             border-radius: 18px;
             padding: 26px 26px 18px 26px;
-            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.20);
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25);
             max-width: 980px;
             margin: 14px auto 18px auto;
         }}
 
         .result-card{{
-            background: #DCEBFF;
+            background: #DCEBFF !important;
             border-radius: 16px;
-            padding: 16px 18px;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
-            margin-top: 14px;
+            padding: 18px 18px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.20);
+            margin-top: 16px;
         }}
 
         .card h2{{
@@ -137,10 +137,6 @@ def set_bg_image(image_path: str):
             margin: 0 0 18px 0;
             color:#475569;
             font-size: 13px;
-        }}
-
-        div[data-testid="stVerticalBlock"] > div:has(> div[data-testid="stForm"]) {{
-            padding-top: 0px;
         }}
 
         .stButton button, .stForm button {{
@@ -264,6 +260,7 @@ def build_feature_row(
 
 #main ui
 st.markdown('<div class="card">', unsafe_allow_html=True)
+
 st.markdown("<h2>Patient Risk Assessment</h2>", unsafe_allow_html=True)
 st.markdown("<p>Complete the form below for your stroke risk analysis</p>", unsafe_allow_html=True)
 
@@ -298,7 +295,6 @@ with st.form("stroke_form", clear_on_submit=False):
         value=100.00, step=0.01, format="%.2f",
         help="Example: 105.50 (2 decimal places)"
     )
-
     st.caption("Normal fasting: 70–100 mg/dL")
 
     bmi = st.number_input(
@@ -307,7 +303,6 @@ with st.form("stroke_form", clear_on_submit=False):
         value=24.5, step=0.1, format="%.1f",
         help="Example: 24.5 (1 decimal place)"
     )
-
     st.caption("Normal range: 18.5–24.9")
 
     smoking_status = st.selectbox(
@@ -318,22 +313,17 @@ with st.form("stroke_form", clear_on_submit=False):
 
     submitted = st.form_submit_button("Analyse stroke risk")
 
-#Validation and prediction
+
+#validation and prediction
 if submitted:
     errors = []
 
-    # Age whole number
     if int(age) != age:
         errors.append("Age must be a **whole number**.")
-
-    # Glucose 2dp validation
     if round(avg_glucose_level, 2) != avg_glucose_level:
         errors.append("Average glucose level must be **2 decimal places**.")
-
-    # BMI 1dp validation
     if round(bmi, 1) != bmi:
         errors.append("BMI must be **1 decimal place**.")
-
     if age < 0 or age > 120:
         errors.append("Age must be between **0 and 120**.")
     if avg_glucose_level <= 0:
@@ -358,6 +348,7 @@ if submitted:
         prob = float(model.predict_proba(X_new)[:, 1][0])
         pred = int(prob >= FINAL_THRESHOLD)
 
+        # Result card
         st.markdown("<div class='result-card'>", unsafe_allow_html=True)
 
         st.subheader("Result")
@@ -369,5 +360,7 @@ if submitted:
             st.success("**Lower risk detected.**")
 
         st.progress(min(max(prob, 0.0), 1.0))
+
+        st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
