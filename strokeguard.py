@@ -156,23 +156,23 @@ def set_bg_image(image_path: str):
             color: #0f172a !important;
         }}
 
-        .card [data-baseweb="select"] > div {{
-            background: #ffffff !important;
-            color: #0f172a !important;
-            border-radius: 12px !important;
-        }}
+        # .card [data-baseweb="select"] > div {{
+        #     background: #ffffff !important;
+        #     color: #0f172a !important;
+        #     border-radius: 12px !important;
+        # }}
 
-        .card [data-testid="stNumberInput"] input {{
-            background: #ffffff !important;
-            color: #0f172a !important;
-            border-radius: 12px !important;
-        }}
+        # .card [data-testid="stNumberInput"] input {{
+        #     background: #ffffff !important;
+        #     color: #0f172a !important;
+        #     border-radius: 12px !important;
+        # }}
 
-        .card [data-testid="stTextInput"] input {{
-            background: #ffffff !important;
-            color: #0f172a !important;
-            border-radius: 12px !important;
-        }}
+        # .card [data-testid="stTextInput"] input {{
+        #     background: #ffffff !important;
+        #     color: #0f172a !important;
+        #     border-radius: 12px !important;
+        # }}
 
         .card svg {{
             fill: #0f172a !important;
