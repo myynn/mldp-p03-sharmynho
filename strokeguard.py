@@ -176,12 +176,12 @@ def set_bg_image(image_path: str):
         }}
 
         .result-wrap {{
-            background: rgba(255,255,255,0.92);
-            border-radius: 18px;
-            padding: 18px 18px 12px 18px;
-            margin-top: 16px;
-            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25);
-            border: 1px solid rgba(15,23,42,0.10);
+            background: rgba(255,255,255,0.92) !important;
+            border-radius: 18px !important;
+            padding: 18px 18px 12px 18px !important;
+            margin-top: 16px !important;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25) !important;
+            border: 1px solid rgba(15,23,42,0.10) !important;
         }}
 
         .result-wrap, .result-wrap * {{
@@ -191,9 +191,11 @@ def set_bg_image(image_path: str):
         .result-wrap code {{
             color: #ffffff !important;
             background: #111827 !important;
+            padding: 2px 6px !important;
+            border-radius: 8px !important;
         }}
 
-        div[data-testid="stAlert"][data-baseweb="notification"] {{
+        div[data-testid="stAlert"] {{
             border-radius: 12px !important;
         }}
         </style>
