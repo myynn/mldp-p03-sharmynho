@@ -164,15 +164,26 @@ def set_bg_image(image_path: str):
             font-size: 14px;
         }}
 
-        div[data-testid="stProgress"] > div {{
+        div[data-testid="stProgress"] > div,
+        div[data-testid="stProgress"] > div > div,
+        div[data-testid="stProgress"] > div > div > div {{
             height: 12px !important;
-            background: rgba(15,23,42,0.14) !important;
             border-radius: 999px !important;
+            box-shadow: none !important;
+            background: transparent !important;
         }}
-        div[data-testid="stProgress"] > div > div {{
+
+        div[data-testid="stProgress"] div[role="progressbar"] {{
             height: 12px !important;
-            background: rgba(0, 90, 255, 0.9) !important;
             border-radius: 999px !important;
+            background: rgba(15,23,42,0.14) !important;
+            overflow: hidden !important;
+        }}
+
+        div[data-testid="stProgress"] div[role="progressbar"] > div {{
+            height: 12px !important;
+            border-radius: 999px !important;
+            background: rgba(0, 90, 255, 0.9) !important;
         }}
         </style>
         """,
