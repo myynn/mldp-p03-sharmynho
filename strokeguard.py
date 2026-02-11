@@ -53,7 +53,6 @@ def set_bg_image(image_path: str):
             display:flex;
             align-items:center;
             gap:12px;
-            padding: 0;
         }}
         .brand-badge {{
             width:40px; height:40px;
@@ -77,18 +76,25 @@ def set_bg_image(image_path: str):
             margin:0;
         }}
 
-        .center-title {{
-            text-align:center;
+        .page-title {{
+            text-align:left;
             font-size: 42px;
             font-weight: 900;
             color: #0f172a;
             margin: 10px 0 4px 0;
         }}
-        .center-sub {{
-            text-align:center;
+        .page-sub {{
+            text-align:left;
             font-size: 16px;
             color: #0f172a;
             margin: 0 0 18px 0;
+        }}
+        .result-outside-title {{
+            text-align:left;
+            font-size: 34px;
+            font-weight: 900;
+            color:#0f172a;
+            margin: 22px 0 10px 0;
         }}
 
         div[data-testid="stForm"] {{
@@ -123,143 +129,13 @@ def set_bg_image(image_path: str):
 
         div[data-testid="stNumberInput"] button {{
             background: #111827 !important;
-            color: #ffffff !important;
             border: 1.5px solid rgba(255,255,255,0.35) !important;
         }}
         div[data-testid="stNumberInput"] svg {{
             fill: #ffffff !important;
         }}
 
-        div[data-testid="stForm"] button[kind="primary"] {{
-            background: #2563eb !important;
-            color: #ffffff !important;
-            border-radius: 12px !important;
-            font-weight: 800 !important;
-            padding: 10px 14px !important;
-            width: 55% !important;
-            min-width: 240px !important;
-            display: block !important;
-            margin: 12px auto 0 auto !important;
-        }}
-
-        code {{
-            color: #ffffff !important;
-            background: #111827 !important;
-            padding: 2px 8px !important;
-            border-radius: 10px !important;
-        }}
-
-        div[data-baseweb="tooltip"] {{
-            background: #ffffff !important;
-            color: #0f172a !important;
-            border-radius: 10px !important;
-            border: 1px solid rgba(15,23,42,0.15) !important;
-        }}
-
-        .result-wrap {{
-            background: rgba(255,255,255,0.92);
-            border-radius: 18px;
-            padding: 18px 18px 14px 18px;
-            margin-top: 16px;
-            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25);
-            border: 1px solid rgba(15,23,42,0.10);
-        }}
-        .result-wrap, .result-wrap * {{
-            color: #0f172a !important;
-        }}
-        .result-title {{
-            text-align:center;
-            font-size: 28px;
-            font-weight: 900;
-            margin: 0 0 10px 0;
-        }}
-
-        .risk-box {{
-            border-radius: 12px;
-            padding: 12px 14px;
-            margin: 10px 0 10px 0;
-            font-weight: 800;
-        }}
-        .risk-high {{
-            background: rgba(239, 68, 68, 0.18);
-            border: 1px solid rgba(239, 68, 68, 0.35);
-        }}
-        .risk-low {{
-            background: rgba(34, 197, 94, 0.18);
-            border: 1px solid rgba(34, 197, 94, 0.35);
-        }}
-
-        .bar {{
-            height: 10px;
-            background: rgba(15,23,42,0.18);
-            border-radius: 999px;
-            overflow: hidden;
-            margin-top: 8px;
-        }}
-        .bar > div {{
-            height: 100%;
-            width: 0%;
-            background: #2563eb;
-        }}
-
-        div[data-testid="stForm"] div[data-testid="stFormSubmitButton"] {{
-            display: flex !important;
-            justify-content: center !important;
-        }}
-        div[data-testid="stForm"] div[data-testid="stFormSubmitButton"] > button,
-        div[data-testid="stForm"] button[kind="primary"] {{
-            width: 55% !important;
-            min-width: 240px !important;
-            display: block !important;
-            margin: 12px auto 0 auto !important;
-        }}
-
-        div[data-testid="stNumberInput"] button {{
-            background: #111827 !important;
-            border: 1.5px solid rgba(255,255,255,0.35) !important;
-        }}
-        div[data-testid="stNumberInput"] svg {{
-            fill: #ffffff !important;
-        }}
-
-        .result-wrap, .result-wrap * {{
-            color: #0f172a !important;
-        }}
-        .result-wrap code, .result-wrap code * {{
-            color: #ffffff !important;
-            background: #111827 !important;
-            padding: 2px 10px !important;
-            border-radius: 999px !important;
-            font-weight: 800 !important;
-        }}
-
-        .bar {{
-            height: 12px !important;
-            background: rgba(15,23,42,0.12) !important;
-            border-radius: 999px !important;
-            overflow: hidden !important;
-        }}
-        .bar > div {{
-            height: 100% !important;
-            background: #2563eb !important;
-            width: 0%;
-            border-radius: 999px !important;
-        }}
-
-        .result-outside-title{{
-            text-align:center;
-            font-size: 34px;
-            font-weight: 900;
-            color:#0f172a;
-            margin: 22px 0 10px 0;
-        }}
-
-        .center-btn {{
-            display:flex;
-            justify-content:center;
-            margin-top: 14px;
-        }}
-        .center-btn button {{
+        div[data-testid="stFormSubmitButton"] > button {{
             background: rgba(0, 90, 255, 0.9) !important;
             color: #ffffff !important;
             border-radius: 12px !important;
@@ -267,6 +143,25 @@ def set_bg_image(image_path: str):
             padding: 10px 14px !important;
             width: 55% !important;
             min-width: 240px !important;
+        }}
+
+        .prob-pill {{
+            display:inline-block;
+            background: #111827;
+            color: #ffffff;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 14px;
+        }}
+        .result-text {{
+            color: #0f172a;
+            font-size: 16px;
+            font-weight: 700;
+        }}
+        .result-note {{
+            color: #334155;
+            font-size: 14px;
         }}
 
         div[data-testid="stProgress"] > div {{
@@ -278,26 +173,6 @@ def set_bg_image(image_path: str):
             height: 12px !important;
             background: rgba(0, 90, 255, 0.9) !important;
             border-radius: 999px !important;
-        }}
-
-        .result-text {{
-            color: #0f172a;
-            font-size: 16px;
-            font-weight: 700;
-        }}
-        .result-note {{
-            color: #334155;
-            font-size: 14px;
-        }}
-
-        .prob-pill {{
-            display:inline-block;
-            background: #111827;
-            color: #ffffff;
-            padding: 2px 10px;
-            border-radius: 999px;
-            font-weight: 800;
-            font-size: 14px;
         }}
         </style>
         """,
@@ -364,8 +239,8 @@ def build_feature_row(
 
 
 #UI
-st.markdown('<div class="center-title">Patient Risk Assessment</div>', unsafe_allow_html=True)
-st.markdown('<div class="center-sub">Complete the form below for your stroke risk analysis</div>', unsafe_allow_html=True)
+st.markdown('<div class="page-title">Patient Risk Assessment</div>', unsafe_allow_html=True)
+st.markdown('<div class="page-sub">Complete the form below for your stroke risk analysis</div>', unsafe_allow_html=True)
 
 with st.form("stroke_form", clear_on_submit=False):
 
