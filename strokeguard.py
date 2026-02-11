@@ -455,8 +455,6 @@ if submitted:
                 Prediction: Lower stroke risk
             </div>
             """
-        st.markdown('<div class="result-outside-title">Result</div>', unsafe_allow_html=True)
-
         pct = int(min(max(prob, 0.0), 1.0) * 100)
 
         st.markdown('<div class="result-outside-title">Result</div>', unsafe_allow_html=True)
