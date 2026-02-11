@@ -275,6 +275,28 @@ def set_bg_image(image_path: str):
         div[data-testid="stProgress"] > div > div {{
             background: rgba(0, 90, 255, 0.9) !important;
         }}
+        .risk-progress {{
+            margin-top: 10px;
+        }}
+        .risk-progress .bar {{
+            height: 12px;
+            background: rgba(15,23,42,0.14);
+            border-radius: 999px;
+            overflow: hidden;
+        }}
+        .risk-progress .fill {{
+            height: 100%;
+            width: 0%;
+            background: rgba(0, 90, 255, 0.9);
+            border-radius: 999px;
+        }}
+        .risk-progress .label {{
+            display:flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-top: 6px;
+            color:#334155;
+        }}
         </style>
         """,
         unsafe_allow_html=True
@@ -435,17 +457,31 @@ if submitted:
             """
         st.markdown('<div class="result-outside-title">Result</div>', unsafe_allow_html=True)
 
+        pct = int(min(max(prob, 0.0), 1.0) * 100)
+
+        st.markdown('<div class="result-outside-title">Result</div>', unsafe_allow_html=True)
+
         st.markdown(
             f"""
             <div class="result-wrap">
                 <p><b>Predicted stroke risk probability:</b> <code>{prob:.4f}</code></p>
                 {risk_box}
-                <p style="margin:0 0 6px 0; font-size: 14px;">
+
+                <p style="margin: 0 0 6px 0; font-size: 14px; color:#334155;">
                     This is a screening estimate, not a medical diagnosis. Please consult a healthcare professional if you have concerns.
                 </p>
+
+                <div class="risk-progress">
+                <div class="bar">
+                    <div class="fill" style="width:{pct}%;"></div>
+                </div>
+                <div class="label">
+                    <span>0%</span>
+                    <span>{pct}%</span>
+                    <span>100%</span>
+                </div>
+                </div>
             </div>
             """,
             unsafe_allow_html=True
         )
-
-        st.progress(min(max(prob, 0.0), 1.0))
