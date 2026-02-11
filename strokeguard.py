@@ -248,6 +248,50 @@ def build_feature_row(
 
     return pd.DataFrame([row], columns=SELECTED_FEATURES)
 
+def build_feature_row_partial(
+    gender=None,
+    age=None,
+    hypertension=None,
+    ever_married=None,
+    work_type=None,
+    avg_glucose_level=None,
+    bmi=None,
+    smoking_status=None
+) -> pd.DataFrame:
+    row = {f: 0 for f in SELECTED_FEATURES}
+
+    if age is not None and age > 0 and "age" in row:
+        row["age"] = int(age)
+
+    if hypertension in ["Yes", "No"] and "hypertension" in row:
+        row["hypertension"] = 1 if hypertension == "Yes" else 0
+
+    if avg_glucose_level is not None and avg_glucose_level > 0 and "avg_glucose_level" in row:
+        row["avg_glucose_level"] = min(float(avg_glucose_level), GLUCOSE_CAP)
+
+    if bmi is not None and bmi > 0 and "bmi" in row:
+        row["bmi"] = float(bmi)
+
+    if gender in ["Male", "Female"] and "gender_Male" in row:
+        row["gender_Male"] = 1 if gender == "Male" else 0
+
+    if ever_married in ["Yes", "No"] and "ever_married_Yes" in row:
+        row["ever_married_Yes"] = 1 if ever_married == "Yes" else 0
+
+    if work_type in ["Private", "Self-employed", "Government job"]:
+        if "work_type_Private" in row:
+            row["work_type_Private"] = 1 if work_type == "Private" else 0
+        if "work_type_Self-employed" in row:
+            row["work_type_Self-employed"] = 1 if work_type == "Self-employed" else 0
+
+    if smoking_status in ["never smoked", "smokes", "formerly smoked"]:
+        if "smoking_status_never smoked" in row:
+            row["smoking_status_never smoked"] = 1 if smoking_status == "never smoked" else 0
+        if "smoking_status_smokes" in row:
+            row["smoking_status_smokes"] = 1 if smoking_status == "smokes" else 0
+
+    return pd.DataFrame([row], columns=SELECTED_FEATURES)
+
 
 #UI
 st.markdown('<div class="page-title">Patient Risk Assessment</div>', unsafe_allow_html=True)
@@ -284,67 +328,66 @@ with st.form("stroke_form", clear_on_submit=False):
 
 # validation and prediction
 if submitted:
-    errors = []
+    gender_in = None if gender.startswith("Select") else gender
+    hypertension_in = None if hypertension.startswith("Select") else hypertension
+    ever_married_in = None if ever_married.startswith("Select") else ever_married
+    work_type_in = None if work_type.startswith("Select") else work_type
+    smoking_in = None if smoking_status.startswith("Select") else smoking_status
 
-    # dropdown validations
-    if gender.startswith("Select"):
-        errors.append("Please select **Gender**.")
-    if hypertension.startswith("Select"):
-        errors.append("Please select **Hypertension** status.")
-    if ever_married.startswith("Select"):
-        errors.append("Please select **Marital status**.")
-    if work_type.startswith("Select"):
-        errors.append("Please select **Work type**.")
-    if smoking_status.startswith("Select"):
-        errors.append("Please select **Smoking status**.")
+    age_in = None if age == 0 else age
+    glucose_in = None if avg_glucose_level == 0 else avg_glucose_level
+    bmi_in = None if bmi == 0 else bmi
 
-    # numeric validations
-    if age == 0:
-        errors.append("Please enter **Age** (cannot be 0).")
-    if avg_glucose_level == 0:
-        errors.append("Please enter **Average glucose level** (cannot be 0).")
-    if bmi == 0:
-        errors.append("Please enter **BMI** (cannot be 0).")
+    # Check if user provided at least 1 input
+    provided_count = sum(x is not None for x in [
+        gender_in, hypertension_in, ever_married_in, work_type_in, smoking_in,
+        age_in, glucose_in, bmi_in
+    ])
 
-    if round(avg_glucose_level, 2) != avg_glucose_level:
-        errors.append("Average glucose level must be **2 decimal places** (e.g., 105.50).")
-    if round(bmi, 1) != bmi:
-        errors.append("BMI must be **1 decimal place** (e.g., 24.5).")
-
-    if errors:
-        st.error("Please fix the following input issues:\n\n- " + "\n- ".join(errors))
-    else:
-        X_new = build_feature_row(
-            gender=gender,
-            age=age,
-            hypertension=hypertension,
-            ever_married=ever_married,
-            work_type=work_type,
-            avg_glucose_level=avg_glucose_level,
-            bmi=bmi,
-            smoking_status=smoking_status
-        )
-
-        prob = float(model.predict_proba(X_new)[:, 1][0])
-        pred = int(prob >= FINAL_THRESHOLD)
-
+    if provided_count == 0:
         st.markdown('<div class="result-outside-title">Result</div>', unsafe_allow_html=True)
+        st.warning("Please provide at least **1 input** to generate a prediction.")
+    else:
+        errors = []
+        if glucose_in is not None and round(glucose_in, 2) != glucose_in:
+            errors.append("Average glucose level must be **2 decimal places** (e.g., 105.50).")
+        if bmi_in is not None and round(bmi_in, 1) != bmi_in:
+            errors.append("BMI must be **1 decimal place** (e.g., 24.5).")
 
-        st.markdown(
-            f'<div class="result-text">Predicted stroke risk probability: '
-            f'<span class="prob-pill">{prob:.4f}</span></div>',
-            unsafe_allow_html=True
-        )
-
-        if pred == 1:
-            st.error("**Prediction: Higher stroke risk**")
+        if errors:
+            st.error("Please fix the following input issues:\n\n- " + "\n- ".join(errors))
         else:
-            st.success("**Prediction: Lower stroke risk**")
+            X_new = build_feature_row_partial(
+                gender=gender_in,
+                age=age_in,
+                hypertension=hypertension_in,
+                ever_married=ever_married_in,
+                work_type=work_type_in,
+                avg_glucose_level=glucose_in,
+                bmi=bmi_in,
+                smoking_status=smoking_in
+            )
 
-        st.markdown(
-            '<div class="result-note">This is a screening estimate, not a medical diagnosis. '
-            'Please consult a healthcare professional if you have concerns.</div>',
-            unsafe_allow_html=True
-        )
+            prob = float(model.predict_proba(X_new)[:, 1][0])
+            pred = int(prob >= FINAL_THRESHOLD)
 
-        st.progress(min(max(prob, 0.0), 1.0))
+            st.markdown('<div class="result-outside-title">Result</div>', unsafe_allow_html=True)
+
+            st.markdown(
+                f'<div class="result-text">Predicted stroke risk probability: '
+                f'<span class="prob-pill">{prob:.4f}</span></div>',
+                unsafe_allow_html=True
+            )
+
+            if pred == 1:
+                st.error("**Prediction: Higher stroke risk**")
+            else:
+                st.success("**Prediction: Lower stroke risk**")
+
+            st.markdown(
+                '<div class="result-note">This is a screening estimate, not a medical diagnosis. '
+                'Please consult a healthcare professional if you have concerns.</div>',
+                unsafe_allow_html=True
+            )
+
+            st.progress(min(max(prob, 0.0), 1.0))
