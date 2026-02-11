@@ -297,6 +297,37 @@ def set_bg_image(image_path: str):
             margin-top: 6px;
             color:#334155;
         }}
+
+        div[data-testid="stProgress"] > div {{
+            height: 12px !important;
+            background: rgba(15,23,42,0.14) !important;
+            border-radius: 999px !important;
+        }}
+        div[data-testid="stProgress"] > div > div {{
+            height: 12px !important;
+            background: rgba(0, 90, 255, 0.9) !important;
+            border-radius: 999px !important;
+        }}
+
+        .result-text {{
+            color: #0f172a;
+            font-size: 16px;
+            font-weight: 700;
+        }}
+        .result-note {{
+            color: #334155;
+            font-size: 14px;
+        }}
+
+        .prob-pill {{
+            display:inline-block;
+            background: #111827;
+            color: #ffffff;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 14px;
+        }}
         </style>
         """,
         unsafe_allow_html=True
@@ -411,7 +442,6 @@ if submitted:
         errors.append("Please select **Smoking status**.")
 
     # numeric validations
-    # numeric validations (now using number_input)
     if age == 0:
         errors.append("Please enter **Age** (cannot be 0).")
     if avg_glucose_level == 0:
@@ -421,7 +451,6 @@ if submitted:
 
     if round(avg_glucose_level, 2) != avg_glucose_level:
         errors.append("Average glucose level must be **2 decimal places** (e.g., 105.50).")
-
     if round(bmi, 1) != bmi:
         errors.append("BMI must be **1 decimal place** (e.g., 24.5).")
 
@@ -441,45 +470,24 @@ if submitted:
 
         prob = float(model.predict_proba(X_new)[:, 1][0])
         pred = int(prob >= FINAL_THRESHOLD)
-        pct = int(min(max(prob, 0.0), 1.0) * 100)
-
-        if pred == 1:
-            risk_box = f"""
-            <div class="risk-box risk-high">
-                Prediction: Higher stroke risk
-            </div>
-            """
-        else:
-            risk_box = f"""
-            <div class="risk-box risk-low">
-                Prediction: Lower stroke risk
-            </div>
-            """
-        pct = int(min(max(prob, 0.0), 1.0) * 100)
 
         st.markdown('<div class="result-outside-title">Result</div>', unsafe_allow_html=True)
 
         st.markdown(
-            f"""
-            <div class="result-wrap">
-                <p><b>Predicted stroke risk probability:</b> <code>{prob:.4f}</code></p>
-                {risk_box}
-
-                <p style="margin: 0 0 6px 0; font-size: 14px; color:#334155;">
-                    This is a screening estimate, not a medical diagnosis. Please consult a healthcare professional if you have concerns.
-                </p>
-
-                <div class="risk-progress">
-                <div class="bar">
-                    <div class="fill" style="width:{pct}%;"></div>
-                </div>
-                <div class="label">
-                    <span>0%</span>
-                    <span>{pct}%</span>
-                    <span>100%</span>
-                </div>
-                </div>
-            </div>
-            """,
+            f'<div class="result-text">Predicted stroke risk probability: '
+            f'<span class="prob-pill">{prob:.4f}</span></div>',
             unsafe_allow_html=True
         )
+
+        if pred == 1:
+            st.error("**Prediction: Higher stroke risk**")
+        else:
+            st.success("**Prediction: Lower stroke risk**")
+
+        st.markdown(
+            '<div class="result-note">This is a screening estimate, not a medical diagnosis. '
+            'Please consult a healthcare professional if you have concerns.</div>',
+            unsafe_allow_html=True
+        )
+
+        st.progress(min(max(prob, 0.0), 1.0))
