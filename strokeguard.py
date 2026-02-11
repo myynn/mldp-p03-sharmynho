@@ -270,13 +270,6 @@ def set_bg_image(image_path: str):
         }}
 
         div[data-testid="stProgress"] > div {{
-            background: rgba(15,23,42,0.14) !important;
-        }}
-        div[data-testid="stProgress"] > div > div {{
-            background: rgba(0, 90, 255, 0.9) !important;
-        }}
-
-        div[data-testid="stProgress"] > div {{
             height: 12px !important;
             background: rgba(15,23,42,0.14) !important;
             border-radius: 999px !important;
