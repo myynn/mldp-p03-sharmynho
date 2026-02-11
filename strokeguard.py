@@ -275,28 +275,6 @@ def set_bg_image(image_path: str):
         div[data-testid="stProgress"] > div > div {{
             background: rgba(0, 90, 255, 0.9) !important;
         }}
-        .risk-progress {{
-            margin-top: 10px;
-        }}
-        .risk-progress .bar {{
-            height: 12px;
-            background: rgba(15,23,42,0.14);
-            border-radius: 999px;
-            overflow: hidden;
-        }}
-        .risk-progress .fill {{
-            height: 100%;
-            width: 0%;
-            background: rgba(0, 90, 255, 0.9);
-            border-radius: 999px;
-        }}
-        .risk-progress .label {{
-            display:flex;
-            justify-content: space-between;
-            font-size: 13px;
-            margin-top: 6px;
-            color:#334155;
-        }}
 
         div[data-testid="stProgress"] > div {{
             height: 12px !important;
